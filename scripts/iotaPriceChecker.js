@@ -8,6 +8,7 @@ loadScript = (scriptName) => {
     document.head.appendChild(scriptEl);
   })
 };
+const breakpoint = "0.02";
 
 async function main(endpoint) {
   let data = await utils.getFromURL(endPoints.priceEnPoints[endpoint].url);
@@ -23,6 +24,23 @@ async function main(endpoint) {
     color = "#1e0bad";
   } else if(price > previousPrice) {
     color = "#0bad20";
+  }
+  if (previousPrice) {
+    let isWoon = (price - previousPrice)/previousPrice > breakpoint ? true : false;
+    console.log((price - previousPrice)/previousPrice);
+    if(isWoon) {
+      chrome.browserAction.setIcon({
+        path: '/images/rocket.png'
+      });
+    } else {
+      chrome.browserAction.setIcon({
+        path: '/images/icon.png',
+      });
+    }
+  } else {
+    chrome.browserAction.setIcon({
+      path: '/images/icon.png'
+    });
   }
   chrome.browserAction.setBadgeBackgroundColor({color: color})
   chrome.browserAction.setBadgeText({text: String(price).substr(0,6)})

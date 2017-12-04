@@ -19,6 +19,7 @@
     "storage"
   ],
   "web_accessible_resources": [
-    "images/icon.png"
+    "images/icon.png",
+    "images/rocket.png"
   ]
 }
