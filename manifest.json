@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "IOTA Value",
+  "description": "Check current value of wallet",
+  "version": "1.0",
+  // "options_page": "options.html",
+  "browser_action": {
+    "default_icon": "images/icon.png",
+    "default_popup": "html/popup.html"
+  },
+  "options_page": "html/options.html",
+  "background": {
+    "scripts": ["scripts/iotaPriceChecker.js"]
+  },
+  "permissions": [
+    "https://api.coinmarketcap.com/",
+    "https://api.bitfinex.com/",
+    "https://free.currencyconverterapi.com/",
+    "storage"
+  ],
+  "web_accessible_resources": [
+    "images/icon.png"
+  ]
+}
