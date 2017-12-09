@@ -44,6 +44,8 @@ let utils;
   setTimeout(() => {
     loader.style.display = 'none';
   }, 1000)
+
+  //save on submit + loader
   optionsForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     loader.style.opacity = 1;
@@ -68,8 +70,4 @@ let utils;
       document.getElementById('submit').disabled = true;
     }
   })
-
-
-
-
 })();

@@ -12,8 +12,12 @@ const endPoints = {
   currencyConvertEndPoint: {
     url: "https://free.currencyconverterapi.com/api/v5/convert?compact=y&q=",
     currencysList: "https://free.currencyconverterapi.com/api/v5/currencies"
-  }
-}
+  },
+};
+
+const config = {
+  woonBreakpoint: 0.02
+};
 
 const mainKey = "iotaChromeExt";
 class iotaCommonUtils {
@@ -24,6 +28,9 @@ class iotaCommonUtils {
           iotaNumber: 1,
           currency: "EUR"
         }}, () => {
+          if (chrome.runtime.error) {
+            console.log(chrome.runtime.lastError);
+          }
           resolve(true);
         })
       }
@@ -64,6 +71,9 @@ class iotaCommonUtils {
       try {
         let allData = await this.getAllFromStore();
         chrome.storage.sync.set({[mainKey] : {...allData, [key]: value}}, () => {
+          if (chrome.runtime.error) {
+            console.log(chrome.runtime.lastError);
+          }
           resolve(true);
         })
       }

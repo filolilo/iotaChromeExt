@@ -8,7 +8,6 @@ loadScript = (scriptName) => {
     document.head.appendChild(scriptEl);
   })
 };
-const breakpoint = "0.02";
 
 async function main(endpoint) {
   let data = await utils.getFromURL(endPoints.priceEnPoints[endpoint].url);
@@ -26,8 +25,7 @@ async function main(endpoint) {
     color = "#0bad20";
   }
   if (previousPrice) {
-    let isWoon = (price - previousPrice)/previousPrice > breakpoint ? true : false;
-    console.log((price - previousPrice)/previousPrice);
+    let isWoon = (price - previousPrice)/previousPrice > config.woonBreakpoint ? true : false;
     if(isWoon) {
       chrome.browserAction.setIcon({
         path: '/images/rocket.png'

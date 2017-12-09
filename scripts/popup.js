@@ -20,10 +20,10 @@ let utils;
   let iotaNumber = await utils.getFromStore("iotaNumber");
   let currencysRateObj = await utils.getFromURL(`${endPoints.currencyConvertEndPoint.url}USD_${currency}`, false);
   let currencysValue = currencysRateObj[`USD_${currency}`].val;
-  document.getElementById('pricePln').innerHTML = String(data * currencysValue).substr(0, 8) + ` ${currency}`;
-  document.getElementById('priceUsd').innerHTML = String(data).substr(0, 8) + ' USD';
-  document.getElementById('sumPln').innerHTML = String(iotaNumber * data * currencysValue).substr(0, 8) + ` ${currency}`;
-  document.getElementById('sumUsd').innerHTML = String(iotaNumber * data).substr(0, 8) + ' USD';
+  document.getElementById('pricePln').innerHTML = (data * currencysValue).toLocaleString(undefined, {style: 'currency', currency: currency});
+  document.getElementById('priceUsd').innerHTML = (data).toLocaleString(undefined, {style: 'currency', currency: 'USD'});
+  document.getElementById('sumPln').innerHTML = (iotaNumber * data * currencysValue).toLocaleString(undefined, {style: 'currency', currency: currency});
+  document.getElementById('sumUsd').innerHTML = (iotaNumber * data).toLocaleString(undefined, {style: 'currency', currency: 'USD'});
   let currencyNameFields = document.getElementsByClassName('currency');
   for (a = 0; a < currencyNameFields.length; a++) {
     currencyNameFields[a].innerHTML = currency;
