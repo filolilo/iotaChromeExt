@@ -17,7 +17,7 @@ const endPoints = {
     coinsList: "https://api.coinmarketcap.com/v1/ticker/"
   },
   fiatsConvertEndPoint: {
-    url: "https://api.fixer.io/latest?symbols=",
+    url: "https://api.fixer.io/latest?base=USD&symbols=",
     fiatsList: "https://free.currencyconverterapi.com/api/v5/currencies"
   },
 };
@@ -141,10 +141,8 @@ class commonUtils {
   }
 
   async convertFromUsdToAnother(usdPrice, fiat) {
-    let currencysRateObj = await utils.getFromURL(`${endPoints.fiatsConvertEndPoint.url}USD,${fiat}`);
-    const currencysRate = currencysRateObj.rates[fiat];
-    const UsdRate = currencysRateObj.rates['USD'];
-    return usdPrice * currencysRate/UsdRate;
+    let currencysRateObj = await utils.getFromURL(`${endPoints.fiatsConvertEndPoint.url}${fiat}`);
+    return usdPrice * currencysRateObj.rates[fiat];
   }
 };
 

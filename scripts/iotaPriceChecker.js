@@ -52,20 +52,30 @@ async function tmp() {
   const fiat = 'PLN';
 
   let xrbUsd = await utils.getCurrencyPrice('raiblocks');
-  let iotaUsd = await utils.getCurrencyPrice('iota');
+  let dataObj = await utils.getFromURL(endPoints.priceEndPoints[endpoint].url);
+  let iotaUsd = utils.deepFind(dataObj, endPoints.priceEndPoints[endpoint].path);
 
   let xrbFiat = await utils.convertFromUsdToAnother(xrbUsd, fiat);
   let iotaFiat = await utils.convertFromUsdToAnother(iotaUsd, fiat);
 
-  const allInUsd = (xrbUsd*260) + (iotaUsd*2810);
-  const allInFiat =(xrbFiat*260) + (iotaFiat*2810);
+  const allIotaUsd = iotaUsd*2810;
+  const allXrbUsd = xrbUsd*267;
+
+  const allIotaFiat = iotaFiat*2810;
+  const allXrbFiat = xrbFiat*267;
+
+  const allInUsd = allIotaUsd + allXrbUsd;
+  const allInFiat =(xrbFiat*267) + (iotaFiat*2810);
 
   console.log('%cCoinMarketCap', 'background: #222; color: #bada55');
-  console.log(`XRB - ${xrbUsd} USD`);
-  console.log(`IOTA - ${iotaUsd} USD`);
-  console.log(`${allInUsd} USD`);
-  console.log(`${allInFiat} ${fiat}`);
+  console.log(`XRB: ${xrbUsd} USD`);
+  console.log(`IOTA: ${iotaUsd} USD`);
+  console.log(`Summary: ${allInUsd} USD`);
+  console.log(`Summary: ${allInFiat} ${fiat}`);
   console.log(`${allInUsd - (iotaUsd*3010)} USD`);
+  console.log(`XRB percentage: ${allXrbUsd*100/allInUsd}% (${allXrbUsd} USD)`);
+  console.log(`IOTA percentage: ${allIotaUsd*100/allInUsd}% (${allIotaUsd} USD)`);
+
 }
 
 
