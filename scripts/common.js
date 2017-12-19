@@ -1,5 +1,5 @@
 const endPoints = {
-  priceEnPoints: {
+  priceEndPoints: {
     coinmarketcap: {
       url: "https://api.coinmarketcap.com/v1/ticker/iota/?convert=USD",
       path: "0.price_usd"
@@ -9,9 +9,16 @@ const endPoints = {
       path: "6"
     }
   },
-  currencyConvertEndPoint: {
-    url: "https://free.currencyconverterapi.com/api/v5/convert?compact=y&q=",
-    currencysList: "https://free.currencyconverterapi.com/api/v5/currencies"
+  coinsEndPoint: {
+    price: {
+      url: "https://api.coinmarketcap.com/v1/ticker/_COIN_/?convert=USD",
+      path: "0.price_usd",
+    },
+    coinsList: "https://api.coinmarketcap.com/v1/ticker/"
+  },
+  fiatsConvertEndPoint: {
+    url: "https://api.fixer.io/latest?symbols=",
+    fiatsList: "https://free.currencyconverterapi.com/api/v5/currencies"
   },
 };
 
@@ -20,7 +27,7 @@ const config = {
 };
 
 const mainKey = "iotaChromeExt";
-class iotaCommonUtils {
+class commonUtils {
   initStore() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -127,6 +134,19 @@ class iotaCommonUtils {
     }
     return current;
   }
-}
+  async getCurrencyPrice(coin) {
+    const url = endPoints.coinsEndPoint.price.url.replace("_COIN_", coin);
+    let coinData = await utils.getFromURL(url);
+    return utils.deepFind(coinData, endPoints.coinsEndPoint.price.path);
+  }
+
+  async convertFromUsdToAnother(usdPrice, fiat) {
+    let currencysRateObj = await utils.getFromURL(`${endPoints.fiatsConvertEndPoint.url}USD,${fiat}`);
+    const currencysRate = currencysRateObj.rates[fiat];
+    const UsdRate = currencysRateObj.rates['USD'];
+    return usdPrice * currencysRate/UsdRate;
+  }
+};
+
 
 

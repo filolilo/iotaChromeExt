@@ -13,8 +13,8 @@ let utils;
 
 (async function() {
   await loadScript('scripts/common.js');
-  utils = new iotaCommonUtils();
-  let allCurrencies = await utils.getFromURL('https://free.currencyconverterapi.com/api/v5/currencies');
+  utils = new commonUtils();
+  let allCurrencies = await utils.getFromURL(endPoints.fiatsConvertEndPoint.fiatsList);
   let allCurrenciesList = Object.keys(allCurrencies['results']);
 
   let savedCurrency = await utils.getFromStore("currency");

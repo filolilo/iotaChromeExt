@@ -14,12 +14,12 @@ let utils;
 (async function() {
   let loader = document.getElementById('loader');
   await loadScript('scripts/common.js');
-  utils = new iotaCommonUtils();
+  utils = new commonUtils();
   let data = await utils.getFromStore("IOTAUSD");
   let currency = await utils.getFromStore("currency");
   let iotaNumber = await utils.getFromStore("iotaNumber");
-  let currencysRateObj = await utils.getFromURL(`${endPoints.currencyConvertEndPoint.url}USD_${currency}`, false);
-  let currencysValue = currencysRateObj[`USD_${currency}`].val;
+  let currencysRateObj = await utils.getFromURL(`${endPoints.fiatsConvertEndPoint.url}USD,${currency}`, false);
+  let currencysValue = currencysRateObj.rates[currency] / currencysRateObj.rates['USD'];
   document.getElementById('pricePln').innerHTML = (data * currencysValue).toLocaleString(undefined, {style: 'currency', currency: currency});
   document.getElementById('priceUsd').innerHTML = (data).toLocaleString(undefined, {style: 'currency', currency: 'USD'});
   document.getElementById('sumPln').innerHTML = (iotaNumber * data * currencysValue).toLocaleString(undefined, {style: 'currency', currency: currency});

@@ -10,9 +10,8 @@ loadScript = (scriptName) => {
 };
 
 async function main(endpoint) {
-  let data = await utils.getFromURL(endPoints.priceEnPoints[endpoint].url);
-  let dataObj = data;
-  let price = utils.deepFind(dataObj, endPoints.priceEnPoints[endpoint].path);
+  let dataObj = await utils.getFromURL(endPoints.priceEndPoints[endpoint].url);
+  let price = utils.deepFind(dataObj, endPoints.priceEndPoints[endpoint].path);
   let previousPrice = await utils.getFromStore('IOTAUSD');
   let color;
   if (!previousPrice) { //no prevPrice - probably first run
@@ -48,13 +47,39 @@ async function main(endpoint) {
 let utils;
 let endpoint = "bitfinex";
 
+async function tmp() {
+  console.clear();
+  const fiat = 'PLN';
+
+  let xrbUsd = await utils.getCurrencyPrice('raiblocks');
+  let iotaUsd = await utils.getCurrencyPrice('iota');
+
+  let xrbFiat = await utils.convertFromUsdToAnother(xrbUsd, fiat);
+  let iotaFiat = await utils.convertFromUsdToAnother(iotaUsd, fiat);
+
+  const allInUsd = (xrbUsd*260) + (iotaUsd*2810);
+  const allInFiat =(xrbFiat*260) + (iotaFiat*2810);
+
+  console.log('%cCoinMarketCap', 'background: #222; color: #bada55');
+  console.log(`XRB - ${xrbUsd} USD`);
+  console.log(`IOTA - ${iotaUsd} USD`);
+  console.log(`${allInUsd} USD`);
+  console.log(`${allInFiat} ${fiat}`);
+  console.log(`${allInUsd - (iotaUsd*3010)} USD`);
+}
+
+
 (async function() {
   await loadScript('scripts/common.js');
-  utils = new iotaCommonUtils();
+  utils = new commonUtils();
   if (false === await utils.checkIfStoreExist()) {
     await utils.initStore();
   };
   main(endpoint);
-  setInterval(() => main(endpoint), 60000);
+  tmp();
+  setInterval(() => {
+    main(endpoint);
+    tmp();
+  }, 60000);
 })();
 
